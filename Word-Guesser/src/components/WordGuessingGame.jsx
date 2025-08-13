@@ -1,3 +1,4 @@
+// 
 import React, { useState, useEffect, useCallback } from "react"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
@@ -16,7 +17,7 @@ const WORDS_DATA = [
   {
     word: "MALWARE",
     hint: "What is the term for malicious software",
-    revealedPositions: [0, 3], // W, F, I
+    revealedPositions: [0, 3], 
   },
   {
     word: "MICROSOFT",
@@ -54,11 +55,66 @@ const WORDS_DATA = [
     revealedPositions: [2, 5],
   },
   {
-    word: "PYTHON",
-    hint: "Which programming language is known for its snake logo",
+    word: "404",
+    hint: "Which HTTP status code means Page Not Found",
+    revealedPositions: [ ], 
+  },
+   {
+    word: "BARD",
+    hint: "What was Google's AI chatbot before Gemini",
+    revealedPositions: [0], 
+  },
+   {
+    word: "GITHUB",
+    hint: "What app is commonly used to host code collaboratively",
+    revealedPositions: [ 2,6], 
+  },
+   {
+    word: "SPAM",
+    hint: "What is the term for junk email",
+    revealedPositions: [ 3], 
+  },
+   {
+    word: "ENCRYPTION",
+    hint: "What is the process of converting data into secret code",
+    revealedPositions: [ 0,4,10], 
+  },
+   {
+    word: "HARDWARE",
+    hint: "What is the physical part of a computer called",
     revealedPositions: [ 2,5], 
   },
+   {
+    word: "HOMEPAGE",
+    hint: "What is the term for the first page of a website",
+    revealedPositions: [ 0,5], 
+  },
+   {
+    word: "ANTIVIRUS",
+    hint: "What is the name for a program that detects and removes viruses",
+    revealedPositions: [ 2,7], 
+  },
+   {
+    word: "HACKING",
+    hint: "What is the act of illegally accessing a computer system",
+    revealedPositions: [ 3,6], 
+  },
+   {
+    word: "HYPERLINK",
+    hint: "What is the term for text that links to another webpage",
+    revealedPositions: [ 0,7], 
+  },
+    {
+    word: "SPEEDTEST",
+    hint: "Which device is used to measure internet speed",
+    revealedPositions: [ 0,5], 
+  },
 ]
+
+// Shuffle function to randomize questions
+const shuffleArray = (array) => {
+  return [...array].sort(() => Math.random() - 0.5);
+};
 
 // Floating animation component
 const FloatingElement = ({ children, delay = 0, duration = 3 }) => (
@@ -83,8 +139,15 @@ export default function WordGuessingGame() {
   const [gameState, setGameState] = useState("playing")
   const [isTimerActive, setIsTimerActive] = useState(true)
   const [isPaused, setIsPaused] = useState(false)
+  const [gameWords, setGameWords] = useState([])
 
-  const currentWord = WORDS_DATA[currentRound]
+  // Initialize game with 5 random questions
+  useEffect(() => {
+    const randomFive = shuffleArray(WORDS_DATA).slice(0, 5);
+    setGameWords(randomFive);
+  }, []);
+
+  const currentWord = gameWords[currentRound]
 
   const createDisplayWord = useCallback(() => {
     if (!currentWord) return ""
@@ -95,7 +158,7 @@ export default function WordGuessingGame() {
   }, [currentWord])
 
   const nextRound = useCallback(() => {
-    if (currentRound < WORDS_DATA.length - 1) {
+    if (currentRound < 4) { // Changed to 4 (0-4 = 5 rounds)
       setCurrentRound((prev) => prev + 1)
       setTimeLeft(10)
       setUserGuess("")
@@ -131,6 +194,8 @@ export default function WordGuessingGame() {
 
   // Reset entire game function
   const resetGame = () => {
+    const randomFive = shuffleArray(WORDS_DATA).slice(0, 5);
+    setGameWords(randomFive);
     setCurrentRound(0)
     setScore(0)
     setTimeLeft(10)
@@ -220,18 +285,18 @@ export default function WordGuessingGame() {
           <CardContent className="space-y-6">
             <div className="relative">
               <div className="text-5xl font-bold text-green-400 animate-bounce">
-                {score}/{WORDS_DATA.length}
+                {score}/5
               </div>
               <div className="absolute inset-0 text-5xl font-bold text-green-500 blur-sm animate-pulse">
-                {score}/{WORDS_DATA.length}
+                {score}/5
               </div>
             </div>
             <p className="text-lg text-gray-300">
-              {score === WORDS_DATA.length
+              {score === 5
                 ? "🎉 Perfect score! You're a tech terminology master!"
-                : score >= 7
+                : score >= 4
                   ? "🚀 Great job! You know your tech terms well!"
-                  : score >= 5
+                  : score >= 3
                     ? "💪 Good effort! Keep learning those tech terms!"
                     : "📚 Keep practicing! You'll get better with time!"}
             </p>
@@ -284,7 +349,7 @@ export default function WordGuessingGame() {
           <div className="flex justify-between items-center">
             <CardTitle className="text-xl font-bold">🎯 Tech Word Challenge</CardTitle>
             <Badge variant="secondary" className="bg-slate-600/50 text-white border-slate-500">
-              Round {currentRound + 1}/{WORDS_DATA.length}
+              Round {currentRound + 1}/5
             </Badge>
           </div>
           <div className="flex justify-between items-center">
@@ -301,7 +366,7 @@ export default function WordGuessingGame() {
             <div className="text-sm">
               Score:{" "}
               <span className="font-bold">
-                {score}/{WORDS_DATA.length}
+                {score}/5
               </span>
             </div>
           </div>
