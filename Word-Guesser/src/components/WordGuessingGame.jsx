@@ -134,7 +134,7 @@ const FloatingElement = ({ children, delay = 0, duration = 3 }) => (
 export default function WordGuessingGame() {
   const [currentRound, setCurrentRound] = useState(0)
   const [score, setScore] = useState(0)
-  const [timeLeft, setTimeLeft] = useState(10)
+  const [timeLeft, setTimeLeft] = useState(18)
   const [userGuess, setUserGuess] = useState("")
   const [gameState, setGameState] = useState("playing")
   const [isTimerActive, setIsTimerActive] = useState(true)
@@ -160,7 +160,7 @@ export default function WordGuessingGame() {
   const nextRound = useCallback(() => {
     if (currentRound < 4) { // Changed to 4 (0-4 = 5 rounds)
       setCurrentRound((prev) => prev + 1)
-      setTimeLeft(10)
+      setTimeLeft(18)
       setUserGuess("")
       setGameState("playing")
       setIsTimerActive(true)
@@ -198,7 +198,7 @@ export default function WordGuessingGame() {
     setGameWords(randomFive);
     setCurrentRound(0)
     setScore(0)
-    setTimeLeft(10)
+    setTimeLeft(18)
     setUserGuess("")
     setGameState("playing")
     setIsTimerActive(true)
